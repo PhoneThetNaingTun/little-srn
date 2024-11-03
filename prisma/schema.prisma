@@ -1,0 +1,221 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String  @map("user_id")
+  type              String
+  provider          String
+  providerAccountId String  @map("provider_account_id")
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+enum Role {
+  Admin
+  User
+}
+
+model User {
+  id            String          @id @default(cuid())
+  name          String?
+  email         String?         @unique
+  emailVerified DateTime?       @map("email_verified")
+  image         String?
+  accounts      Account[]
+  phone         String?
+  dateOfBirth   String?
+  password      String?
+  role          Role?            @default(User)
+  createdDate   DateTime?     @default(now())
+  BookReviews   BookReviews[]
+  BoookOrders   BoookOrders[]
+  CourseReviews CourseReviews[]
+  Messages      Messages[]
+  UserCourses   UserCourses[]
+
+  @@map("users")
+}
+
+model Books {
+  id          String        @id @default(cuid())
+  title       String
+  author      String
+  pages       String
+  price       String
+  image       String?
+  createdDate DateTime?     @default(now())
+  BookReviews BookReviews[]
+  BoookOrders BoookOrders[]
+}
+
+model BookReviews {
+  id          String    @id @default(cuid())
+  userId      String
+  bookId      String
+  review      String
+  createdDate DateTime? @default(now())
+  books       Books     @relation(fields: [bookId], references: [id])
+  user        User      @relation(fields: [userId], references: [id])
+}
+
+model BoookOrders {
+  id          String    @id @default(cuid())
+  userId      String
+  bookId      String
+  address     String
+  createdDate DateTime? @default(now())
+  books       Books     @relation(fields: [bookId], references: [id])
+  user        User      @relation(fields: [userId], references: [id])
+}
+
+model Levels {
+  id          String    @id @default(cuid())
+  level       String
+  createdDate DateTime? @default(now())
+  Courses     Courses[]
+}
+
+model Status {
+  id          String    @id @default(cuid())
+  status      String
+  createdDate DateTime? @default(now())
+  Courses     Courses[]
+}
+
+model Courses {
+  id                 String            @id @default(cuid())
+  levelId            String
+  statusId           String
+  cName              String
+  image              String?
+  video              String?
+  description        String?
+  videoLabel         String
+  cHour              String
+  cPractice          String
+  zoomFee            String?
+  teachYourSelfField String?
+  createdDate        DateTime?         @default(now())
+  level              Levels            @relation(fields: [levelId], references: [id])
+  status             Status            @relation(fields: [statusId], references: [id])
+  CourseDetails      CourseDetails[]
+  CourseDocuments    CourseDocuments[]
+  Exercises          Exercises[]
+  Lectures           Lectures[]
+  CourseReviews      CourseReviews[]
+  UserCourses        UserCourses[]
+}
+
+model UserCourses {
+  id          String    @id @default(cuid())
+  courseId    String
+  userId      String
+  isConfirm   Boolean @default(false)
+  createdDate DateTime? @default(now())
+  course      Courses   @relation(fields: [courseId], references: [id])
+  user        User      @relation(fields: [userId], references: [id])
+}
+
+model CourseReviews {
+  id          String    @id @default(cuid())
+  userId      String
+  courseId    String
+  review      String
+  createdDate DateTime? @default(now())
+  user        User      @relation(fields: [userId], references: [id])
+  course      Courses   @relation(fields: [courseId], references: [id])
+}
+
+model CourseDetails {
+  id          String    @id @default(cuid())
+  courseId    String
+  couseDetail String
+  createdDate DateTime? @default(now())
+  course      Courses   @relation(fields: [courseId], references: [id])
+}
+
+model CourseDocuments {
+  id          String    @id @default(cuid())
+  courseId    String
+  documentId  String
+  createdDate DateTime? @default(now())
+  course      Courses   @relation(fields: [courseId], references: [id])
+  document    Documents @relation(fields: [documentId], references: [id])
+}
+
+model Documents {
+  id              String            @id @default(cuid())
+  dname           String
+  dlink           String
+  createdDate     DateTime?         @default(now())
+  CourseDocuments CourseDocuments[]
+}
+
+model Exercises {
+  id          String      @id @default(cuid())
+  ename       String
+  courseId    String
+  createdDate DateTime?   @default(now())
+  course      Courses     @relation(fields: [courseId], references: [id])
+  Questions   Questions[]
+}
+
+model Questions {
+  id                  String    @id @default(cuid())
+  questionDescription String
+  sample              String
+  questionImage       String?
+  exerciseId          String
+  createdDate         DateTime? @default(now())
+  exercise            Exercises @relation(fields: [exerciseId], references: [id])
+}
+
+model Lectures {
+  id             String           @id @default(cuid())
+  title          String
+  courseId       String
+  createdDate    DateTime?        @default(now())
+  course         Courses          @relation(fields: [courseId], references: [id])
+  LectureDetails LectureDetails[]
+}
+
+model LectureDetails {
+  id                String    @id @default(cuid())
+  lectureDetailName String
+  lectureLink       String
+  lectureId         String
+  createdDate       DateTime? @default(now())
+
+  leacture Lectures @relation(fields: [lectureId], references: [id])
+}
+
+model Messages {
+  id          String    @id @default(cuid())
+  userId      String
+  message     String
+  createdDate DateTime? @default(now())
+  user        User      @relation(fields: [userId], references: [id])
+}
