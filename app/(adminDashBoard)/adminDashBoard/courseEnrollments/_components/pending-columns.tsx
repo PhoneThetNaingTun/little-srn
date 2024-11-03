@@ -26,6 +26,10 @@ export const pendingColumns: ColumnDef<PendingColumn>[] = [
     accessorKey: "uphone",
     header: "Phone Number",
   },
+  {
+    accessorKey: "ctitle",
+    header: "Course",
+  },
 
   {
     id: "id",

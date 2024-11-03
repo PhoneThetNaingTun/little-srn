@@ -20,25 +20,27 @@ export const YourCourseCard = ({ image, header, description, id }: Prop) => {
           <Image
             src={`/uploads/${image}` || ""}
             alt="Course Image"
-            className="rounded-2xl  w-48 h-60"
+            className="rounded-2xl  lg:w-48 lg:h-60 w-20 h-36"
             width={100}
             height={500}
           />
         </div>
         <div className=" flex flex-col gap-1 md:gap-10  mt-2 px-3 z-[2] w-1/3">
-          <p className="text-red-600 text-2xl font-semibold">{header}</p>
+          <p className="text-red-600 text-[12px] lg:text-2xl font-semibold">
+            {header}
+          </p>
           <div>
             <p className="text-[10px] md:text-[13px] font-bold">
               {description}
             </p>
           </div>
         </div>
-        <div className="absolute bottom-2 right-2 lg:-translate-x-[50%] lg:-translate-y-[50%] flex justify-end z-[2]">
+        <div className="absolute bottom-0 right-0   flex justify-end">
           <Button
             onClick={() => {
               router.push(`/yourCourses/${id}`);
             }}
-            className="bg-purple-600 text-white"
+            className="bg-purple-600 text-white text-[12px] md:text-lg"
           >
             Watch Videos
           </Button>

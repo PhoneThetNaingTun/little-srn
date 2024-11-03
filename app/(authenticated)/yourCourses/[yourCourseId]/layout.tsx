@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import { MenuBar } from "./_components/menuBar";
+import { ReviewBox } from "./_components/ReviewBox";
 
 interface Prop {
   children: ReactNode;
@@ -7,10 +8,15 @@ interface Prop {
 
 const YourCourseLayout = ({ children }: Prop) => {
   return (
-    <div className="flex h-screen items-center justify-between p-5 gap-10">
-      <div className="flex-1"> {children}</div>
-      <div className="flex-1">
-        <MenuBar />
+    <div className="p-1 lg:p-5 overflow-y-scroll h-screen">
+      <div className="relative flex flex-col lg:flex-row justify-around items-center h-full">
+        <div className=""> {children}</div>
+        <div className="absolute top-10 left-20">
+          <MenuBar />
+        </div>
+        <div className="w-full lg:w-1/2 lg:m-auto">
+          <ReviewBox />
+        </div>
       </div>
     </div>
   );

@@ -51,7 +51,7 @@ const AdminNavBar = () => {
     },
     {
       id: 5,
-      name: "Enrollments",
+      name: "New Enrollments",
       href: "/adminDashBoard/courseEnrollments",
       isActive: pathname.endsWith("/courseEnrollments"),
     },

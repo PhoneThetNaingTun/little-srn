@@ -28,8 +28,10 @@ export const CourseDetailClient = () => {
   //     questions.find((quest) => quest.exerciseId === item?.id)
   //   );
   return (
-    <div className="p-5">
+    <div className="">
       <p className="text-3xl font-semibold">{course?.cName}</p>
+      <p className="text-xl font-semibold">Description:{course?.description}</p>
+      <p className="text-xl font-semibold">Course Hours:{course?.cHour}</p>
     </div>
   );
 };

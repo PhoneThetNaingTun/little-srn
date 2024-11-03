@@ -25,13 +25,6 @@ const Nav = () => {
       isActive: pathname.startsWith("/courses"),
       icon: <BookA />,
     },
-    {
-      id: 3,
-      name: "Books ",
-      to: "/",
-      isActive: pathname.startsWith("/asf"),
-      icon: <Book />,
-    },
   ];
   return (
     <header className="flex h-14 items-center gap-4   px-4 lg:h-[60px] lg:px-6 justify-between">

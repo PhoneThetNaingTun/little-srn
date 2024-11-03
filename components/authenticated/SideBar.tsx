@@ -13,7 +13,14 @@ import { cn } from "@/lib/utils";
 import { Sidebar, SidebarBody, SidebarLink } from "../ui/sidebar";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { signOut } from "next-auth/react";
-import { BookA, BookDown, BookOpenCheck, RegexIcon } from "lucide-react";
+import {
+  BookA,
+  BookDown,
+  BookOpenCheck,
+  Headphones,
+  Headset,
+  RegexIcon,
+} from "lucide-react";
 import Profile from "../../public/profile.jpg";
 import { PaperPlaneIcon } from "@radix-ui/react-icons";
 import { fetchApp } from "@/store/Slices/AppSlice";
@@ -36,38 +43,37 @@ export function SideBarNav({ children }: Prop) {
     {
       label: "Available Courses",
       href: "/availableCourses",
-      icon: (
-        <BookA className="text-blue-950 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
-      ),
+      icon: <BookA className="text-white h-5 w-5 flex-shrink-0" />,
     },
     {
       label: "Your Courses",
       href: "/yourCourses",
-      icon: (
-        <BookDown className="text-blue-950 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
-      ),
+      icon: <BookDown className="text-white h-5 w-5 flex-shrink-0" />,
     },
     {
       label: "Your Enrollments",
       href: "/enrollments",
-      icon: (
-        <BookOpenCheck className="text-blue-950 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
-      ),
+      icon: <BookOpenCheck className="text-white h-5 w-5 flex-shrink-0" />,
+    },
+    {
+      label: "Contact Me",
+      href: "/contactMe",
+      icon: <Headset className="text-white h-5 w-5 flex-shrink-0" />,
     },
   ];
   const [open, setOpen] = useState<boolean>(false);
   return (
     <div
       className={cn(
-        "rounded-md flex flex-col md:flex-row bg-white w-full flex-1 mx-auto border border-neutral-200 dark:border-neutral-700 overflow-hidden",
+        "rounded-md flex flex-col md:flex-row bg-purple-500 w-full flex-1 mx-auto border border-neutral-200 dark:border-neutral-700 overflow-hidden",
         "h-screen" // for your use case, use `h-screen` instead of `h-[60vh]`
       )}
     >
       <Sidebar open={open} setOpen={setOpen}>
-        <SidebarBody className="justify-between bg-white  gap-10">
+        <SidebarBody className="justify-between bg-purple-500  gap-10">
           <div className="flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
             {open ? <Logo /> : <LogoIcon />}
-            <div className="mt-8 flex flex-col gap-2">
+            <div className="mt-8 flex flex-col gap-2 text-white">
               {links.map((link, idx) => (
                 <SidebarLink key={idx} link={link} setOpen={setOpen} />
               ))}
@@ -79,11 +85,11 @@ export function SideBarNav({ children }: Prop) {
                 <button type="submit">
                   {open ? (
                     <span className="flex gap-2">
-                      <IconArrowLeft className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />{" "}
+                      <IconArrowLeft className="text-white h-5 w-5 flex-shrink-0" />{" "}
                       <span className="text-[14px]">Logout</span>
                     </span>
                   ) : (
-                    <IconArrowLeft className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+                    <IconArrowLeft className="text-white h-5 w-5 flex-shrink-0" />
                   )}
                 </button>
               </form>
