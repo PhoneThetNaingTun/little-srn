@@ -2,8 +2,8 @@
 
 import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
-import { string } from "zod";
-
+import fs from "fs";
+import path from "path";
 export async function POST(req: NextRequest) {
   const {
     levelId,
@@ -101,8 +101,27 @@ export async function DELETE(req: NextRequest) {
   if (!isExist) {
     return NextResponse.json({ error: "Course Doesn't Exist!" });
   }
-  await prisma.courses.delete({ where: { id } });
-  return NextResponse.json({
-    message: "Course Deleted successfully!",
-  });
+  const filePath = path.join(
+    process.cwd(),
+    "public",
+    "uploads",
+    isExist.image as string
+  );
+  try {
+    if (fs.existsSync(filePath)) {
+      fs.unlinkSync(filePath); // Delete the file
+      await prisma.courses.delete({ where: { id } });
+      return NextResponse.json({
+        message: "Course Deleted successfully!",
+      });
+    } else {
+      return NextResponse.json({ error: "File not found" }, { status: 404 });
+    }
+  } catch (error) {
+    console.error("Error deleting file:", error);
+    return NextResponse.json(
+      { error: "Failed to delete file" },
+      { status: 500 }
+    );
+  }
 }

@@ -89,6 +89,10 @@ export const ConfirmDialog = ({ bname, bId }: Prop) => {
             <li>
               <p>Cash down (အိမ်အရောက်ငွေချေ)</p>
             </li>
+            <li>
+              <p>ဖုန်းနံပတ်နှင့် လိပ်စာ မှန်ကန်အောင် ထည့်ပြီးမှ order တင်ရန်</p>
+              <p>Order Confirm ပြီးပါက Cancel ၍မရတော့ပါ။</p>
+            </li>
           </ol>
         </div>
         <Button disabled={isLoading} onClick={handleCreateOrder}>

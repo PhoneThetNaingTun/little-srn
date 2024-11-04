@@ -37,14 +37,9 @@ const AdminNavBar = () => {
       href: "/adminDashBoard/courses",
       isActive: pathname.endsWith("/courses"),
     },
+
     {
       id: 4,
-      name: "Reviews",
-      href: "/adminDashBoard/reviews",
-      isActive: pathname.endsWith("/reviews"),
-    },
-    {
-      id: 5,
       name: "Documents",
       href: "/adminDashBoard/documents",
       isActive: pathname.endsWith("/documents"),
@@ -54,6 +49,12 @@ const AdminNavBar = () => {
       name: "New Enrollments",
       href: "/adminDashBoard/courseEnrollments",
       isActive: pathname.endsWith("/courseEnrollments"),
+    },
+    {
+      id: 6,
+      name: "Reviews",
+      href: "/adminDashBoard/reviews",
+      isActive: pathname.endsWith("/reviews"),
     },
   ];
   return (

@@ -19,12 +19,6 @@ const Footer = () => {
       to: "/courses",
       isActive: pathname.startsWith("/courses"),
     },
-    {
-      id: 3,
-      name: "Books ",
-      to: "/",
-      isActive: pathname.startsWith("/asf"),
-    },
   ];
   const courseNav = [
     {

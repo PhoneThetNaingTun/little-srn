@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ConfirmDialog } from "./ConfirmDialog";
+import { ReviewDialog } from "./ReviewDialog";
 export const BookDetailPageClient = () => {
   const param = useParams();
   const { bookId } = param;
@@ -55,7 +56,9 @@ export const BookDetailPageClient = () => {
               Price: <span className="text-gray-600"> {book?.price}</span>
             </p>{" "}
           </div>
-
+          <div className="absolute top-5 right-5">
+            <ReviewDialog />
+          </div>
           <div className="absolute bottom-5 right-5">
             <ConfirmDialog
               bname={book?.title as string}

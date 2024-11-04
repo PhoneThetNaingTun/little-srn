@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import Kids from "../../public/kids.png";
 import { Button } from "@/components/ui/button";
@@ -6,8 +7,10 @@ import rocket from "../../public/Rocket.png";
 import OxfortComputing from "@/components/landingSide/OxfortComputing";
 import { BackgroundLinesDemo } from "@/components/landingSide/lineAnimation";
 import CodingForKids from "@/components/landingSide/CodingForKids";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter();
   return (
     <div className="h-full  pt-16">
       <div className="relative flex justify-around   items-center pb-10 ">
@@ -17,7 +20,14 @@ export default function Home() {
             Let Children be the diractor and actior in his own play
           </p>
           <div>
-            <Button className="text-white">Enroll Now</Button>
+            <Button
+              className="text-white"
+              onClick={() => {
+                router.push("/availableCourses");
+              }}
+            >
+              Enroll Now
+            </Button>
           </div>
         </div>
         <div className="flex-1  justify-center items-center hidden md:flex">

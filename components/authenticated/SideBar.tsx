@@ -21,6 +21,7 @@ import {
   Headphones,
   Headset,
   RegexIcon,
+  ShieldAlert,
 } from "lucide-react";
 import Profile from "../../public/profile.jpg";
 import { PaperPlaneIcon } from "@radix-ui/react-icons";
@@ -99,6 +100,18 @@ export function SideBarNav({ children }: Prop) {
                   )}
                 </button>
               </form>
+              {user.role === "Admin" ? (
+                <Link href={"/adminDashBoard"} className="flex">
+                  {open ? (
+                    <span className="flex gap-2">
+                      <ShieldAlert className="text-white h-5 w-5 flex-shrink-0" />{" "}
+                      <span className="text-[14px]">Admin</span>
+                    </span>
+                  ) : (
+                    <ShieldAlert className="text-white h-5 w-5 flex-shrink-0" />
+                  )}
+                </Link>
+              ) : null}
             </div>
           </div>
           <div>
