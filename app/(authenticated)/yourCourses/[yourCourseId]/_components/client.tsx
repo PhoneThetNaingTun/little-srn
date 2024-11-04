@@ -9,18 +9,7 @@ export const CourseDetailClient = () => {
   const { courses } = useAppSelector((state) => state.Courses);
 
   const course = courses.find((item) => item.id === yourCourseId);
-  //   const lecture = lectures.map((item) =>
-  //     item.courseId === yourCourseId ? item : undefined
-  //   );
-  //   const lectureDetail = lecture.map((item) =>
-  //     lectureDetails.find((ld) => ld.lectureId === item?.id)
-  //   );
-  //   const courseDocument = courseDocuments.map((cd) =>
-  //     cd.courseId === yourCourseId ? cd : undefined
-  //   );
-  //   const document = courseDocument.map((item) =>
-  //     documents.find((doc) => doc.id === item?.documentId)
-  //   );
+
   //   const exercise = exercises.map((item) =>
   //     item.courseId === yourCourseId ? item : undefined
   //   );
@@ -28,10 +17,29 @@ export const CourseDetailClient = () => {
   //     questions.find((quest) => quest.exerciseId === item?.id)
   //   );
   return (
-    <div className="">
-      <p className="text-3xl font-semibold">{course?.cName}</p>
-      <p className="text-xl font-semibold">Description:{course?.description}</p>
-      <p className="text-xl font-semibold">Course Hours:{course?.cHour}</p>
+    <div className="flex flex-col lg:flex-row items-center gap-4">
+      <div>
+        <p className="text-3xl font-semibold bg-gradient-to-r bg-clip-text text-transparent from-yellow-500 via-violet-500 to-blue-500">
+          {course?.cName}
+        </p>
+        <iframe
+          width="560"
+          className="m-auto w-[100%] h-[300px] lg:w-[650px] lg:h-[400px] rounded-lg"
+          height="315"
+          src={course?.video || ""}
+          title="YouTube video player"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        ></iframe>
+      </div>
+
+      <div>
+        <p className="text-sm md:text-xl lg:text-2xl font-semibold">
+          Video Label : {course?.videoLabel}
+        </p>
+        <p className="text-sm md:text-lg lg:text-xl  font-semibold text-gray-500">
+          Description:{course?.description}
+        </p>
+      </div>
     </div>
   );
 };

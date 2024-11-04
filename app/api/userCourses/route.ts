@@ -14,7 +14,7 @@ export async function POST(req: Request) {
   if (isExist) {
     return NextResponse.json({
       error:
-        "You Alrealy Enroll This Course Please Wait For Confirmation Or Check In Your Your Courses Page",
+        "You have Alrealy Enrolled This Course Please Wait For Confirmation Or Check In Your Your Courses Page",
     });
   }
   const newUserCourse = await prisma.userCourses.create({

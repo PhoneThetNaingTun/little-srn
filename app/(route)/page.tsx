@@ -9,7 +9,7 @@ import CodingForKids from "@/components/landingSide/CodingForKids";
 
 export default function Home() {
   return (
-    <div className="h-full pt-16">
+    <div className="h-full  pt-16">
       <div className="relative flex justify-around   items-center pb-10 ">
         <div className="flex-1 flex flex-col gap-5">
           <FlipWordsPara />

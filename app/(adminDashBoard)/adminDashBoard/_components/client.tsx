@@ -9,6 +9,8 @@ const OverViewPageClient = () => {
   const { students } = useAppSelector((state) => state.Students);
   const { courses } = useAppSelector((state) => state.Courses);
   const { userCourse } = useAppSelector((state) => state.UserCourses);
+  const { bookOrders } = useAppSelector((state) => state.BookOrders);
+  const Borders = bookOrders.filter((book) => book.orderConfirm === false);
   return (
     <div>
       <p className="font-semibold text-3xl font-roboto">OverViews</p>
@@ -20,6 +22,7 @@ const OverViewPageClient = () => {
         />{" "}
         <OverviewCard title={"Total Courses"} content={courses.length} />
         <OverviewCard title={"Enrollemnts"} content={userCourse.length} />
+        <OverviewCard title={"Book Orders"} content={Borders.length} />
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         <LatestUserCard />

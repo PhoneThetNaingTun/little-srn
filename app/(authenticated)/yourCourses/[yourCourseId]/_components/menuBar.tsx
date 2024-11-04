@@ -21,13 +21,14 @@ import {
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { NotebookText } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
 
 export const MenuBar = () => {
   const param = useParams();
   const { yourCourseId } = param;
+  const [open, setOpen] = useState<boolean>(false);
   const { courses } = useAppSelector((state) => state.Courses);
   const { lectures } = useAppSelector((state) => state.Lectures);
-
   const { lectureDetails } = useAppSelector((state) => state.LectureDetails);
   const course = courses.find((item) => item.id === yourCourseId);
   const lecture = lectures.filter((item) =>
@@ -35,9 +36,14 @@ export const MenuBar = () => {
   );
 
   return (
-    <Sheet>
+    <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button className="text-white">
+        <Button
+          onClick={() => {
+            setOpen(true);
+          }}
+          className="text-white"
+        >
           <span>Lectures</span> <NotebookText />
         </Button>
       </SheetTrigger>
@@ -62,6 +68,9 @@ export const MenuBar = () => {
                       <Link
                         href={`/yourCourses/${course?.id}/lectureDetails/${ld?.id}`}
                         key={ld.id}
+                        onClick={() => {
+                          setOpen(false);
+                        }}
                       >
                         <AccordionContent>
                           {ind + 1}

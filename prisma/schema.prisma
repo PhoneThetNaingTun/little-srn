@@ -86,6 +86,7 @@ model BoookOrders {
   userId      String
   bookId      String
   address     String
+  orderConfirm Boolean @default(false)
   createdDate DateTime? @default(now())
   books       Books     @relation(fields: [bookId], references: [id])
   user        User      @relation(fields: [userId], references: [id])

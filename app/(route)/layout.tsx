@@ -12,7 +12,9 @@ const Layout = ({ children }: Prop) => {
         <Nav />
       </div>
 
-      <div className="lg:px-20 px-2">{children}</div>
+      <div className="lg:px-20 px-2 scrollbar-thin scrollbar-thumb-rose-500">
+        {children}
+      </div>
 
       <Footer />
     </div>

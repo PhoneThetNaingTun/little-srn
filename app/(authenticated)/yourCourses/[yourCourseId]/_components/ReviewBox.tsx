@@ -6,11 +6,17 @@ import {
   CardDescription,
   CardHeader,
 } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { CreateCourseReview } from "@/store/Slices/CourseReviewSlice";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { Spline } from "lucide-react";
+import { MessageCirclePlus, Spline } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useState } from "react";
 
@@ -19,6 +25,7 @@ export const ReviewBox = () => {
   const { toast } = useToast();
   const dispatch = useAppDispatch();
   const [reviewMessage, setReviewMessage] = useState<string>("");
+  const [open, setOpen] = useState<boolean>(false);
   const { user } = useAppSelector((state) => state.App);
   const { isLoading } = useAppSelector((state) => state.CourseReviews);
   const { yourCourseId } = param;
@@ -31,6 +38,7 @@ export const ReviewBox = () => {
         onSuccess: (message) => {
           toast({ title: message, variant: "default" });
           setReviewMessage("");
+          setOpen(false);
         },
         onError: (error) => {
           toast({ title: error, variant: "destructive" });
@@ -39,12 +47,29 @@ export const ReviewBox = () => {
     );
   };
   return (
-    <Card>
-      <CardHeader>
-        <p>Give Review About This Course</p>
-      </CardHeader>
-      <CardContent className="flex flex-col gap-3 ">
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button
+          onClick={() => {
+            setOpen(true);
+          }}
+          className="text-white bg-purple-500 hover:bg-purple-700"
+        >
+          <MessageCirclePlus />
+          Give Reviews
+        </Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <p>Give Review About This Course</p>
+        </DialogHeader>
         <Input
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleSubmitReview();
+            }
+          }}
+          defaultValue={reviewMessage}
           placeholder="Message Here"
           onChange={(e) => setReviewMessage(e.target.value)}
         />
@@ -57,7 +82,7 @@ export const ReviewBox = () => {
             )}
           </Button>
         </div>
-      </CardContent>
-    </Card>
+      </DialogContent>
+    </Dialog>
   );
 };

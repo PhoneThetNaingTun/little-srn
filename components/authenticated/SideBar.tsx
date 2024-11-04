@@ -17,6 +17,7 @@ import {
   BookA,
   BookDown,
   BookOpenCheck,
+  BookUser,
   Headphones,
   Headset,
   RegexIcon,
@@ -59,6 +60,11 @@ export function SideBarNav({ children }: Prop) {
       label: "Contact Me",
       href: "/contactMe",
       icon: <Headset className="text-white h-5 w-5 flex-shrink-0" />,
+    },
+    {
+      label: "Books",
+      href: "/books",
+      icon: <BookUser className="text-white h-5 w-5 flex-shrink-0" />,
     },
   ];
   const [open, setOpen] = useState<boolean>(false);

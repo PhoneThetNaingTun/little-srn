@@ -24,10 +24,15 @@ export async function GET() {
       const questions = await prisma.questions.findMany();
       const courseReviews = await prisma.courseReviews.findMany();
       const userCourses = await prisma.userCourses.findMany();
+      const bookOrders = await prisma.boookOrders.findMany({
+        where: { userId: userFromDb.id },
+        orderBy: { orderConfirm: "desc" },
+      });
+      const bookReviews = await prisma.bookReviews.findMany();
       return NextResponse.json({
         userFromDb,
         books,
-        bookReviews: [],
+        bookReviews,
         users,
         levels,
         status,
@@ -41,6 +46,7 @@ export async function GET() {
         exercises,
         questions,
         userCourses,
+        bookOrders,
       });
     } else {
       return NextResponse.json({ message: "User Doesnt Exist" });

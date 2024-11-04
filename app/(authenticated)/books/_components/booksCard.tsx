@@ -9,18 +9,13 @@ interface Prop {
   id: string;
 }
 
-export const AvailableCourseCard = ({
-  image,
-  header,
-  description,
-  id,
-}: Prop) => {
+export const BookCard = ({ image, header, description, id }: Prop) => {
   const router = useRouter();
   return (
     <div className="max-w-sm mx-auto bg-white rounded-lg shadow-md overflow-hidden transform transition duration-300 hover:scale-105">
       <Image
         src={`/uploads/${image}` || ""}
-        alt="Course Image"
+        alt="Book Image"
         className="w-full h-48 object-cover"
         width={100}
         height={500}
@@ -30,11 +25,11 @@ export const AvailableCourseCard = ({
         <p className="mt-2 text-gray-600">{description}</p>
         <Button
           onClick={() => {
-            router.push(`/availableCourses/${id}`);
+            router.push(`/books/${id}`);
           }}
           className="mt-4 w-full bg-purple-600 text-white hover:bg-purple-700"
         >
-          Learn More
+          Check
         </Button>
       </div>
     </div>

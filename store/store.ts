@@ -17,6 +17,7 @@ import MessageSliceReducer from "./Slices/MessageSlice";
 import ExerciseSlcieReducer from "./Slices/ExerciseSlice";
 import QuestionSliceReducer from "./Slices/QuestionSlice";
 import UserCourseSliceReducer from "./Slices/UserCourseSlice";
+import BookOrderSliceReducer from "./Slices/BookOrderSlice";
 
 export const store = configureStore({
   reducer: {
@@ -37,6 +38,7 @@ export const store = configureStore({
     Exercises: ExerciseSlcieReducer,
     Questions: QuestionSliceReducer,
     UserCourses: UserCourseSliceReducer,
+    BookOrders: BookOrderSliceReducer,
   },
 });
 

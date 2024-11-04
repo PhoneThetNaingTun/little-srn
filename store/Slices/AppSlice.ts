@@ -16,6 +16,7 @@ import { setCourseReviews } from "./CourseReviewSlice";
 import { setLectureDetails } from "./LectureDetailSlice";
 import { setCourseDocuments } from "./CourseDocumentSlice";
 import { setUserCourse } from "./UserCourseSlice";
+import { setBookOrders } from "./BookOrderSlice";
 
 const initialState: UserApp = {
   user: {
@@ -59,6 +60,7 @@ export const fetchApp = createAsyncThunk(
       exercises,
       questions,
       userCourses,
+      bookOrders,
     } = dataFromServer;
 
     thunkapi.dispatch(setBooks(books));
@@ -74,6 +76,7 @@ export const fetchApp = createAsyncThunk(
     thunkapi.dispatch(setDocument(documents));
     thunkapi.dispatch(setUserCourse(userCourses));
     thunkapi.dispatch(setBookReviews(bookReviews));
+    thunkapi.dispatch(setBookOrders(bookOrders));
     thunkapi.dispatch(setCourseReviews(courseReviews));
     thunkapi.dispatch(setLectureDetails(lectureDetails));
     thunkapi.dispatch(setCourseDocuments(courseDocuments));

@@ -31,6 +31,7 @@ export async function GET() {
       const exercises = await prisma.exercises.findMany();
       const questions = await prisma.questions.findMany();
       const userCourses = await prisma.userCourses.findMany();
+      const bookOrders = await prisma.boookOrders.findMany();
       return NextResponse.json({
         userFromDb,
         books,
@@ -48,6 +49,7 @@ export async function GET() {
         exercises,
         questions,
         userCourses,
+        bookOrders,
       });
     } else {
       return NextResponse.json({ message: "User Doesnt Exist" });
