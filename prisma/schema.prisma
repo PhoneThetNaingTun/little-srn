@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -26,16 +20,11 @@ model Account {
   scope             String?
   id_token          String? @db.Text
   session_state     String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
+  @@index([userId], map: "accounts_user_id_fkey")
   @@map("accounts")
-}
-
-enum Role {
-  Admin
-  User
 }
 
 model User {
@@ -44,70 +33,97 @@ model User {
   email         String?         @unique
   emailVerified DateTime?       @map("email_verified")
   image         String?
-  accounts      Account[]
   phone         String?
   dateOfBirth   String?
   password      String?
-  role          Role?            @default(User)
-  createdDate   DateTime?     @default(now())
-  BookReviews   BookReviews[]
-  BoookOrders   BoookOrders[]
-  CourseReviews CourseReviews[]
-  Messages      Messages[]
-  UserCourses   UserCourses[]
+  role          Role?           @default(User)
+  createdDate   DateTime?       @default(now())
+  accounts      Account[]
+  bookreviews   bookreviews[]
+  boookorders   boookorders[]
+  coursereviews coursereviews[]
+  messages      messages[]
+  usercourses   usercourses[]
 
   @@map("users")
 }
 
-model Books {
-  id          String        @id @default(cuid())
+model bookreviews {
+  id          String    @id
+  userId      String
+  bookId      String
+  review      String
+  createdDate DateTime? @default(now())
+  books       books     @relation(fields: [bookId], references: [id], map: "BookReviews_bookId_fkey")
+  users       User      @relation(fields: [userId], references: [id], map: "BookReviews_userId_fkey")
+
+  @@index([bookId], map: "BookReviews_bookId_fkey")
+  @@index([userId], map: "BookReviews_userId_fkey")
+}
+
+model books {
+  id          String        @id
   title       String
   author      String
   pages       String
   price       String
   image       String?
   createdDate DateTime?     @default(now())
-  BookReviews BookReviews[]
-  BoookOrders BoookOrders[]
+  bookreviews bookreviews[]
+  boookorders boookorders[]
 }
 
-model BookReviews {
-  id          String    @id @default(cuid())
+model boookorders {
+  id           String    @id
+  userId       String
+  bookId       String
+  address      String
+  orderConfirm Boolean   @default(false)
+  createdDate  DateTime? @default(now())
+  books        books     @relation(fields: [bookId], references: [id], map: "BoookOrders_bookId_fkey")
+  users        User      @relation(fields: [userId], references: [id], map: "BoookOrders_userId_fkey")
+
+  @@index([bookId], map: "BoookOrders_bookId_fkey")
+  @@index([userId], map: "BoookOrders_userId_fkey")
+}
+
+model coursedetails {
+  id          String    @id
+  courseId    String
+  couseDetail String
+  createdDate DateTime? @default(now())
+  courses     courses   @relation(fields: [courseId], references: [id], map: "CourseDetails_courseId_fkey")
+
+  @@index([courseId], map: "CourseDetails_courseId_fkey")
+}
+
+model coursedocuments {
+  id          String    @id
+  courseId    String
+  documentId  String
+  createdDate DateTime? @default(now())
+  courses     courses   @relation(fields: [courseId], references: [id], map: "CourseDocuments_courseId_fkey")
+  documents   documents @relation(fields: [documentId], references: [id], map: "CourseDocuments_documentId_fkey")
+
+  @@index([courseId], map: "CourseDocuments_courseId_fkey")
+  @@index([documentId], map: "CourseDocuments_documentId_fkey")
+}
+
+model coursereviews {
+  id          String    @id
   userId      String
-  bookId      String
+  courseId    String
   review      String
   createdDate DateTime? @default(now())
-  books       Books     @relation(fields: [bookId], references: [id])
-  user        User      @relation(fields: [userId], references: [id])
+  courses     courses   @relation(fields: [courseId], references: [id], map: "CourseReviews_courseId_fkey")
+  users       User      @relation(fields: [userId], references: [id], map: "CourseReviews_userId_fkey")
+
+  @@index([courseId], map: "CourseReviews_courseId_fkey")
+  @@index([userId], map: "CourseReviews_userId_fkey")
 }
 
-model BoookOrders {
-  id          String    @id @default(cuid())
-  userId      String
-  bookId      String
-  address     String
-  orderConfirm Boolean @default(false)
-  createdDate DateTime? @default(now())
-  books       Books     @relation(fields: [bookId], references: [id])
-  user        User      @relation(fields: [userId], references: [id])
-}
-
-model Levels {
-  id          String    @id @default(cuid())
-  level       String
-  createdDate DateTime? @default(now())
-  Courses     Courses[]
-}
-
-model Status {
-  id          String    @id @default(cuid())
-  status      String
-  createdDate DateTime? @default(now())
-  Courses     Courses[]
-}
-
-model Courses {
-  id                 String            @id @default(cuid())
+model courses {
+  id                 String            @id
   levelId            String
   statusId           String
   cName              String
@@ -120,103 +136,110 @@ model Courses {
   zoomFee            String?
   teachYourSelfField String?
   createdDate        DateTime?         @default(now())
-  level              Levels            @relation(fields: [levelId], references: [id])
-  status             Status            @relation(fields: [statusId], references: [id])
-  CourseDetails      CourseDetails[]
-  CourseDocuments    CourseDocuments[]
-  Exercises          Exercises[]
-  Lectures           Lectures[]
-  CourseReviews      CourseReviews[]
-  UserCourses        UserCourses[]
+  coursedetails      coursedetails[]
+  coursedocuments    coursedocuments[]
+  coursereviews      coursereviews[]
+  levels             levels            @relation(fields: [levelId], references: [id], map: "Courses_levelId_fkey")
+  status             status            @relation(fields: [statusId], references: [id], map: "Courses_statusId_fkey")
+  exercises          exercises[]
+  lectures           lectures[]
+  usercourses        usercourses[]
+
+  @@index([levelId], map: "Courses_levelId_fkey")
+  @@index([statusId], map: "Courses_statusId_fkey")
 }
 
-model UserCourses {
-  id          String    @id @default(cuid())
-  courseId    String
-  userId      String
-  isConfirm   Boolean @default(false)
-  createdDate DateTime? @default(now())
-  course      Courses   @relation(fields: [courseId], references: [id])
-  user        User      @relation(fields: [userId], references: [id])
-}
-
-model CourseReviews {
-  id          String    @id @default(cuid())
-  userId      String
-  courseId    String
-  review      String
-  createdDate DateTime? @default(now())
-  user        User      @relation(fields: [userId], references: [id])
-  course      Courses   @relation(fields: [courseId], references: [id])
-}
-
-model CourseDetails {
-  id          String    @id @default(cuid())
-  courseId    String
-  couseDetail String
-  createdDate DateTime? @default(now())
-  course      Courses   @relation(fields: [courseId], references: [id])
-}
-
-model CourseDocuments {
-  id          String    @id @default(cuid())
-  courseId    String
-  documentId  String
-  createdDate DateTime? @default(now())
-  course      Courses   @relation(fields: [courseId], references: [id])
-  document    Documents @relation(fields: [documentId], references: [id])
-}
-
-model Documents {
-  id              String            @id @default(cuid())
+model documents {
+  id              String            @id
   dname           String
   dlink           String
   createdDate     DateTime?         @default(now())
-  CourseDocuments CourseDocuments[]
+  coursedocuments coursedocuments[]
 }
 
-model Exercises {
-  id          String      @id @default(cuid())
+model exercises {
+  id          String      @id
   ename       String
   courseId    String
   createdDate DateTime?   @default(now())
-  course      Courses     @relation(fields: [courseId], references: [id])
-  Questions   Questions[]
+  courses     courses     @relation(fields: [courseId], references: [id], map: "Exercises_courseId_fkey")
+  questions   questions[]
+
+  @@index([courseId], map: "Exercises_courseId_fkey")
 }
 
-model Questions {
-  id                  String    @id @default(cuid())
+model lecturedetails {
+  id                String    @id
+  lectureDetailName String
+  lectureLink       String
+  lectureId         String
+  createdDate       DateTime? @default(now())
+  lectures          lectures  @relation(fields: [lectureId], references: [id], map: "LectureDetails_lectureId_fkey")
+
+  @@index([lectureId], map: "LectureDetails_lectureId_fkey")
+}
+
+model lectures {
+  id             String           @id
+  title          String
+  courseId       String
+  createdDate    DateTime?        @default(now())
+  lecturedetails lecturedetails[]
+  courses        courses          @relation(fields: [courseId], references: [id], map: "Lectures_courseId_fkey")
+
+  @@index([courseId], map: "Lectures_courseId_fkey")
+}
+
+model levels {
+  id          String    @id
+  level       String
+  createdDate DateTime? @default(now())
+  courses     courses[]
+}
+
+model messages {
+  id          String    @id
+  userId      String
+  message     String
+  createdDate DateTime? @default(now())
+  users       User      @relation(fields: [userId], references: [id], map: "Messages_userId_fkey")
+
+  @@index([userId], map: "Messages_userId_fkey")
+}
+
+model questions {
+  id                  String    @id
   questionDescription String
   sample              String
   questionImage       String?
   exerciseId          String
   createdDate         DateTime? @default(now())
-  exercise            Exercises @relation(fields: [exerciseId], references: [id])
+  exercises           exercises @relation(fields: [exerciseId], references: [id], map: "Questions_exerciseId_fkey")
+
+  @@index([exerciseId], map: "Questions_exerciseId_fkey")
 }
 
-model Lectures {
-  id             String           @id @default(cuid())
-  title          String
-  courseId       String
-  createdDate    DateTime?        @default(now())
-  course         Courses          @relation(fields: [courseId], references: [id])
-  LectureDetails LectureDetails[]
-}
-
-model LectureDetails {
-  id                String    @id @default(cuid())
-  lectureDetailName String
-  lectureLink       String
-  lectureId         String
-  createdDate       DateTime? @default(now())
-
-  leacture Lectures @relation(fields: [lectureId], references: [id])
-}
-
-model Messages {
-  id          String    @id @default(cuid())
-  userId      String
-  message     String
+model status {
+  id          String    @id
+  status      String
   createdDate DateTime? @default(now())
-  user        User      @relation(fields: [userId], references: [id])
+  courses     courses[]
+}
+
+model usercourses {
+  id          String    @id
+  courseId    String
+  userId      String
+  isConfirm   Boolean   @default(false)
+  createdDate DateTime? @default(now())
+  courses     courses   @relation(fields: [courseId], references: [id], map: "UserCourses_courseId_fkey")
+  users       User      @relation(fields: [userId], references: [id], map: "UserCourses_userId_fkey")
+
+  @@index([courseId], map: "UserCourses_courseId_fkey")
+  @@index([userId], map: "UserCourses_userId_fkey")
+}
+
+enum Role {
+  Admin
+  User
 }
