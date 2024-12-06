@@ -10,8 +10,7 @@ import { adminFetchApp } from "@/store/Slices/AdminDashBoardSlice";
 const AdminNavBar = () => {
   const dispatch = useAppDispatch();
   const pathname = usePathname();
-  const { user } = useAppSelector((state) => state.AdminDashBoard);
-  const { init } = useAppSelector((state) => state.AdminDashBoard);
+  const { user, init } = useAppSelector((state) => state.AdminDashBoard);
 
   useEffect(() => {
     if (!init) {
